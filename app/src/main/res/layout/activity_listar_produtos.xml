@@ -33,7 +33,7 @@
         android:textSize="20sp"/>
 
     <ListView
-        android:id="@+id/lista_produtos"
+        android:id="@+id/lista_livros"
         android:layout_width="match_parent"
         android:layout_height="588dp"
         android:layout_marginTop="10dp">

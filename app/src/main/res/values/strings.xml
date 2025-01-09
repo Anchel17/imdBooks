@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">ImdMarket</string>
-    <string name="header_title">IMDMARKET</string>
+    <string name="app_name">ImdBooks</string>
+    <string name="header_title">IMDBOOKS</string>
     <string name="login_string">Login:</string>
     <string name="login_hint">Login</string>
     <string name="senha_string">Senha:</string>
@@ -8,21 +8,23 @@
     <string name="entrar_btn">ENTRAR</string>
     <string name="esqueci_senha">Esqueci minha senha/login</string>
     <string name="menu_question">O que deseja fazer?</string>
-    <string name="menu_cadastrar_produto">Cadastrar produto</string>
-    <string name="menu_listar_produtos">Listar produtos</string>
-    <string name="menu_alterar_produto">Alterar produto</string>
-    <string name="menu_deletar_produto">Deletar produtos</string>
-    <string name="create_title"> CADASTRAR PRODUTO</string>
-    <string name="update_title"> ALTERAR PRODUTO</string>
-    <string name="create_update_codigo_produto">Código do produto:</string>
-    <string name="create_update_nome_produto">Nome produto:</string>
-    <string name="create_update_descricao_produto">Descrição do produto:</string>
-    <string name="create_update_estoque_produto">Estoque</string>
+    <string name="menu_cadastrar_produto">Cadastrar livro</string>
+    <string name="menu_listar_produtos">Listar livros</string>
+    <string name="menu_alterar_produto">Alterar livro</string>
+    <string name="menu_deletar_produto">Deletar livro</string>
+    <string name="create_title"> CADASTRAR LIVRO</string>
+    <string name="update_title"> ALTERAR LIVRO</string>
+    <string name="create_update_isbn">ISBN:</string>
+    <string name="create_update_titulo_livro">Título:</string>
+    <string name="create_update_autor_livro">Autor:</string>
+    <string name="create_update_editora_livro">Editora:</string>
+    <string name="create_update_descricao_livro">Descrição:</string>
+    <string name="create_update_url_imagem">URL imagem:</string>
     <string name="create_update_clean">Limpar</string>
     <string name="create_save">Salvar</string>
     <string name="alterar_save">Alterar</string>
-    <string name="deletar_title">DELETAR PRODUTO</string>
+    <string name="deletar_title">DELETAR LIVRO</string>
     <string name="deletar">Deletar</string>
-    <string name="listar_title">LISTA DE PRODUTO</string>
+    <string name="listar_title">LIVROS</string>
     <string name="voltar_btn">Voltar</string>
 </resources>

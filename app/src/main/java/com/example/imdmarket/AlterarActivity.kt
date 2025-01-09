@@ -6,32 +6,31 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class AlterarActivity : AppCompatActivity() {
 
-    var listaProdutos = mutableListOf<Produto>();
+    var listaLivros = mutableListOf<Livro>();
 
-    lateinit var codigoProduto: EditText;
-    lateinit var nomeProduto: EditText;
-    lateinit var descProduto: EditText;
-    lateinit var estoqueProduto: EditText;
+    lateinit var isbnLivro: EditText;
+    lateinit var tituloLivro: EditText;
+    lateinit var autorLivro: EditText;
+    lateinit var editoraLivro: EditText;
+    lateinit var descricaoLivro: EditText;
+    lateinit var urlImageLivro: EditText;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alterar)
 
         var btnSaveAlterar = findViewById<Button>(R.id.btnSaveAlteracao);
-        listaProdutos = carregarListaProdutos();
+        listaLivros = carregarListaLivros();
 
         btnSaveAlterar.setOnClickListener({
-            if(isCodigoProdutoValido()) {
-                salvarProduto();
+            if(isIsbnLivroValido()) {
+                salvarLivro();
                 irParaTelaDeMenu();
             }
             else{
@@ -40,31 +39,37 @@ class AlterarActivity : AppCompatActivity() {
         })
     }
 
-    private fun isCodigoProdutoValido(): Boolean{
-        var codigoProdutoValido = isFieldValido(R.id.update_cod_produto_field);
+    private fun isIsbnLivroValido(): Boolean{
+        var isbnLivroValido = isFieldValido(R.id.update_isbn_livro_field);
 
-        return codigoProdutoValido && existeProdutoComMesmoCodigo(R.id.update_cod_produto_field);
+        return isbnLivroValido && existeLivroComMesmoCodigo(R.id.update_isbn_livro_field);
     }
 
-    private fun salvarProduto(){
-        codigoProduto = findViewById<EditText>(R.id.update_cod_produto_field);
-        nomeProduto = findViewById<EditText>(R.id.update_nome_produto_field);
-        descProduto = findViewById<EditText>(R.id.update_desc_produto_field);
-        estoqueProduto = findViewById<EditText>(R.id.update_estq_field);
+    private fun salvarLivro(){
+        isbnLivro = findViewById<EditText>(R.id.update_isbn_livro_field);
+        tituloLivro = findViewById<EditText>(R.id.update_titulo_livro_field);
+        autorLivro = findViewById<EditText>(R.id.update_autor_livro_field);
+        editoraLivro = findViewById<EditText>(R.id.update_editora_livro_field);
+        descricaoLivro = findViewById<EditText>(R.id.update_desc_livro_field);
+        urlImageLivro = findViewById<EditText>(R.id.update_urlimage_field);
 
-        var produto = Produto(codigoProduto.text.toString(), nomeProduto.text.toString(),
-            descProduto.text.toString(), estoqueProduto.text.toString().toInt());
 
-        listaProdutos.forEach {
-            if(it.codigoProduto == codigoProduto.text.toString()){
-                it.codigoProduto = produto.codigoProduto;
-                it.nomeProduto = produto.nomeProduto;
-                it.descricaoProduto = produto.descricaoProduto;
-                it.estoque = produto.estoque;
+        var livro = Livro(isbnLivro.text.toString(), tituloLivro.text.toString(),
+            autorLivro.text.toString(), editoraLivro.text.toString(),
+            descricaoLivro.text.toString(), urlImageLivro.text.toString());
+
+        listaLivros.forEach {
+            if(it.isbn == isbnLivro.text.toString()){
+                it.isbn = livro.isbn;
+                it.tituloLivro = livro.tituloLivro;
+                it.autorLivro = livro.autorLivro;
+                it.editoraLivro = livro.editoraLivro;
+                it.descricaoLivro = livro.descricaoLivro;
+                it.urlImageLivro = livro.urlImageLivro;
             }
         }
 
-        Toast.makeText(this, "Produto Alterado com sucesso.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Livro Alterado com sucesso.", Toast.LENGTH_LONG).show();
         salvarSharedPreferences();
     }
 
@@ -83,41 +88,41 @@ class AlterarActivity : AppCompatActivity() {
         return false;
     }
 
-    private fun carregarListaProdutos(): MutableList<Produto>{
-        val sharedPreferences = this.getSharedPreferences("produtosPreference", Context.MODE_PRIVATE);
+    private fun carregarListaLivros(): MutableList<Livro>{
+        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
         val gson = Gson();
-        val json = sharedPreferences.getString("produtos", null);
+        val json = sharedPreferences.getString("livros", null);
 
-        val type = object : TypeToken<MutableList<Produto>>() {}.type;
+        val type = object : TypeToken<MutableList<Livro>>() {}.type;
 
         if(json.isNullOrEmpty()){
-            return ArrayList<Produto>();
+            return ArrayList<Livro>();
         }
 
         return gson.fromJson(json, type);
     }
 
-    private fun existeProdutoComMesmoCodigo(idField: Int): Boolean{
-        var codigo = findViewById<EditText>(idField);
+    private fun existeLivroComMesmoCodigo(idField: Int): Boolean{
+        var isbn = findViewById<EditText>(idField);
 
-        var produtoJaCadastrado = listaProdutos.find {
-                produto: Produto -> produto.codigoProduto == codigo.text.toString() }
+        var livroJaCadastrado = listaLivros.find {
+                livro: Livro -> livro.isbn == isbn.text.toString() }
 
-        if(produtoJaCadastrado != null){
+        if(livroJaCadastrado != null){
             return true;
         }
 
-        Toast.makeText(this, "Nenhum produto cadastrado com esse código.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Nenhum Livro cadastrado com esse código.", Toast.LENGTH_LONG).show();
         return false;
     }
 
     private fun salvarSharedPreferences(){
-        val sharedPreferences = this.getSharedPreferences("produtosPreference", Context.MODE_PRIVATE);
+        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
         val editor = sharedPreferences.edit();
         val gson = Gson();
 
-        val json = gson.toJson(listaProdutos);
-        editor.putString("produtos", json);
+        val json = gson.toJson(listaLivros);
+        editor.putString("livros", json);
         editor.apply();
     }
 

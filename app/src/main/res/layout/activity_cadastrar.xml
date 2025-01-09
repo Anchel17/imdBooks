@@ -40,12 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="36dp"
-        android:text="@string/create_update_codigo_produto"
+        android:text="@string/create_update_isbn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/create_cod_produto_field"
+        android:id="@+id/create_isbn_livro_field"
         android:layout_width="371dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -61,12 +61,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:text="@string/create_update_nome_produto"
+        android:text="@string/create_update_titulo_livro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_cod_produto_field" />
+        app:layout_constraintTop_toBottomOf="@+id/create_isbn_livro_field" />
 
     <EditText
-        android:id="@+id/create_nome_prod_field"
+        android:id="@+id/create_titulo_livro_field"
         android:layout_width="371dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -82,12 +82,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:text="@string/create_update_descricao_produto"
+        android:text="@string/create_update_autor_livro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_nome_prod_field" />
+        app:layout_constraintTop_toBottomOf="@+id/create_titulo_livro_field" />
 
     <EditText
-        android:id="@+id/create_desc_prod_field"
+        android:id="@+id/create_autor_livro_field"
         android:layout_width="371dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
@@ -103,47 +103,89 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:text="@string/create_update_estoque_produto"
+        android:text="@string/create_update_editora_livro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_desc_prod_field" />
+        app:layout_constraintTop_toBottomOf="@+id/create_autor_livro_field" />
 
     <EditText
-        android:id="@+id/create_estq_field"
+        android:id="@+id/create_editora_livro_field"
         android:layout_width="371dp"
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <Button
-        android:id="@+id/btnSaveAlteracao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:text="@string/create_save"
-        android:backgroundTint="@color/purple_default"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_estq_field"
-        app:layout_constraintVertical_bias="0.104" />
-
-    <Button
         android:id="@+id/btnLimpar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_update_clean"
         android:backgroundTint="@color/purple_default"
+        android:text="@string/create_update_clean"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.299"
+        app:layout_constraintHorizontal_bias="0.335"
         app:layout_constraintStart_toEndOf="@+id/btnSaveAlteracao"
-        app:layout_constraintTop_toBottomOf="@+id/create_estq_field"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintTop_toBottomOf="@+id/create_urlimg_livro_field"
+        app:layout_constraintVertical_bias="0.136" />
+
+    <Button
+        android:id="@+id/btnSaveAlteracao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:backgroundTint="@color/purple_default"
+        android:text="@string/create_save"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_urlimg_livro_field"
+        app:layout_constraintVertical_bias="0.136" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/create_update_descricao_livro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_editora_livro_field" />
+
+    <EditText
+        android:id="@+id/create_desc_livro_field"
+        android:layout_width="371dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/create_update_url_imagem"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_desc_livro_field" />
+
+    <EditText
+        android:id="@+id/create_urlimg_livro_field"
+        android:layout_width="371dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

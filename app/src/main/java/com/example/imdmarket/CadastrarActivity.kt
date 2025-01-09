@@ -12,12 +12,14 @@ import com.google.gson.reflect.TypeToken
 
 class CadastrarActivity : AppCompatActivity() {
 
-    var listaProdutos = mutableListOf<Produto>();
+    var listaLivros = mutableListOf<Livro>();
 
-    lateinit var codigoProduto: EditText;
-    lateinit var nomeProduto: EditText;
-    lateinit var descProduto: EditText;
-    lateinit var estoqueProduto: EditText;
+    lateinit var isbnLivro: EditText;
+    lateinit var tituloLivro: EditText;
+    lateinit var autorLivro: EditText;
+    lateinit var editoraLivro: EditText;
+    lateinit var descLivro: EditText;
+    lateinit var urlImageLivro: EditText;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +27,11 @@ class CadastrarActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cadastrar)
 
         var btnSalvar = findViewById<Button>(R.id.btnSaveAlteracao);
-        listaProdutos = carregarListaProdutos();
+        listaLivros = carregarListaLivros();
 
         btnSalvar.setOnClickListener({
             if(isAllCamposValidos()) {
-                salvarProduto();
+                salvarLivro();
                 irParaTelaDeMenu();
             }
             else{
@@ -39,14 +41,17 @@ class CadastrarActivity : AppCompatActivity() {
     }
 
     private fun isAllCamposValidos(): Boolean{
-        var codigoProdutoValido = isFieldValido(R.id.create_cod_produto_field) &&
-                !existeProdutoComMesmoCodigo(R.id.create_cod_produto_field);
-        var nomeProdutoValido = isFieldValido(R.id.create_nome_prod_field);
-        var descProdutoValido = isFieldValido(R.id.create_desc_prod_field);
-        var estoqueProdutoValido = isFieldValido(R.id.create_estq_field);
+        var isbnLivroValido = isFieldValido(R.id.create_isbn_livro_field) &&
+                !existeLivroComMesmoCodigo(R.id.create_isbn_livro_field);
+        var tituloLivroValido = isFieldValido(R.id.create_titulo_livro_field);
+        var autorLivroValido = isFieldValido(R.id.create_autor_livro_field);
+        var editoraLivroValido = isFieldValido(R.id.create_editora_livro_field);
+        var descricaoLivroValida = isFieldValido(R.id.create_desc_livro_field);
+        var urlImageLivroValida = isFieldValido(R.id.create_desc_livro_field);
 
-        return  codigoProdutoValido && nomeProdutoValido
-            &&  descProdutoValido && estoqueProdutoValido;
+        return  isbnLivroValido && tituloLivroValido
+            &&  autorLivroValido && editoraLivroValido
+            &&  descricaoLivroValida && urlImageLivroValida;
     }
 
     private fun showInvalidFieldsToast(){
@@ -64,53 +69,56 @@ class CadastrarActivity : AppCompatActivity() {
         return false;
     }
 
-    private fun salvarProduto(){
-        codigoProduto = findViewById<EditText>(R.id.create_cod_produto_field);
-        nomeProduto = findViewById<EditText>(R.id.create_nome_prod_field);
-        descProduto = findViewById<EditText>(R.id.create_desc_prod_field);
-        estoqueProduto = findViewById<EditText>(R.id.create_estq_field);
+    private fun salvarLivro(){
+        isbnLivro = findViewById<EditText>(R.id.create_isbn_livro_field);
+        tituloLivro = findViewById<EditText>(R.id.create_titulo_livro_field);
+        autorLivro = findViewById<EditText>(R.id.create_autor_livro_field);
+        editoraLivro = findViewById<EditText>(R.id.create_editora_livro_field);
+        descLivro = findViewById<EditText>(R.id.create_desc_livro_field);
+        urlImageLivro = findViewById<EditText>(R.id.create_urlimg_livro_field);
 
-        var produto = Produto(codigoProduto.text.toString(), nomeProduto.text.toString(),
-                            descProduto.text.toString(), estoqueProduto.text.toString().toInt());
+        var livro = Livro(isbnLivro.text.toString(), tituloLivro.text.toString(),
+            autorLivro.text.toString(), editoraLivro.text.toString(),
+            descLivro.text.toString(), urlImageLivro.text.toString());
 
 
-        listaProdutos.add(produto);
-        Toast.makeText(this, "Produto cadastrado com sucesso.", Toast.LENGTH_LONG).show();
+        listaLivros.add(livro);
+        Toast.makeText(this, "Livro cadastrado com sucesso.", Toast.LENGTH_LONG).show();
         salvarSharedPreferences();
     }
 
-    private fun carregarListaProdutos(): MutableList<Produto>{
-        val sharedPreferences = this.getSharedPreferences("produtosPreference", Context.MODE_PRIVATE);
+    private fun carregarListaLivros(): MutableList<Livro>{
+        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
         val gson = Gson();
-        val json = sharedPreferences.getString("produtos", null);
+        val json = sharedPreferences.getString("livros", null);
 
-        val type = object : TypeToken<MutableList<Produto>>() {}.type;
+        val type = object : TypeToken<MutableList<Livro>>() {}.type;
 
         if(json.isNullOrEmpty()){
-            return ArrayList<Produto>();
+            return ArrayList<Livro>();
         }
 
         return gson.fromJson(json, type);
     }
 
     private fun salvarSharedPreferences(){
-        val sharedPreferences = this.getSharedPreferences("produtosPreference", Context.MODE_PRIVATE);
+        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
         val editor = sharedPreferences.edit();
         val gson = Gson();
 
-        val json = gson.toJson(listaProdutos);
-        editor.putString("produtos", json);
+        val json = gson.toJson(listaLivros);
+        editor.putString("livros", json);
         editor.apply();
     }
 
-    private fun existeProdutoComMesmoCodigo(idField: Int): Boolean{
-        var codigo = findViewById<EditText>(idField);
+    private fun existeLivroComMesmoCodigo(idField: Int): Boolean{
+        var isbn = findViewById<EditText>(idField);
 
-        var produtoJaCadastrado = listaProdutos.find {
-            produto: Produto -> produto.codigoProduto == codigo.text.toString() }
+        var livroJaCadastrado = listaLivros.find {
+            livro: Livro -> livro.isbn == isbn.text.toString() }
 
-        if(produtoJaCadastrado != null){
-            Toast.makeText(this, "Já existe produto cadastrado com esse código.", Toast.LENGTH_LONG).show();
+        if(livroJaCadastrado != null){
+            Toast.makeText(this, "Já existe livro cadastrado com esse ISBN.", Toast.LENGTH_LONG).show();
             return true;
         }
 
