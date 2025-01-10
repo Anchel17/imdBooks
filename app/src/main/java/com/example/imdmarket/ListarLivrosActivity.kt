@@ -7,26 +7,26 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.imdmarket.adapter.LivroAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class ListarProdutosActivity : AppCompatActivity() {
+class ListarLivrosActivity : AppCompatActivity() {
     var listaLivros = mutableListOf<Livro>();
-    lateinit var listViewLivros: ListView;
+    lateinit var recyclerViewLivros: RecyclerView;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_listar_produtos)
+        setContentView(R.layout.activity_listar_livros)
 
         val voltarBtn = findViewById<Button>(R.id.voltarBtn);
 
         listaLivros = carregarListaLivros();
-        listViewLivros = findViewById<ListView>(R.id.lista_livros);
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,
-            listaLivros.map { it.toString()});
-
-        listViewLivros.adapter = adapter;
+        initRecyclerView();
 
         voltarBtn.setOnClickListener({
             irParaTelaDeMenu();
@@ -45,6 +45,12 @@ class ListarProdutosActivity : AppCompatActivity() {
         }
 
         return gson.fromJson(json, type);
+    }
+
+    private fun initRecyclerView(){
+        recyclerViewLivros = findViewById<RecyclerView>(R.id.livros_recyclerview);
+        recyclerViewLivros.layoutManager = LinearLayoutManager(this);
+        recyclerViewLivros.adapter = LivroAdapter(listaLivros)
     }
 
     private fun irParaTelaDeMenu(){

@@ -3,10 +3,7 @@ package com.example.imdmarket
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +48,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun irParaTelaDeListar(){
-        val telaListar = Intent(this, ListarProdutosActivity::class.java)
+        val telaListar = Intent(this, ListarLivrosActivity::class.java)
         startActivity(telaListar);
     }
 }

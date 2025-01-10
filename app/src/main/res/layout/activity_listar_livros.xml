@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ListarProdutosActivity">
+    tools:context=".ListarLivrosActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -32,23 +32,20 @@
         android:layout_marginTop="25dp"
         android:textSize="20sp"/>
 
-    <ListView
-        android:id="@+id/lista_livros"
-        android:layout_width="match_parent"
-        android:layout_height="588dp"
-        android:layout_marginTop="10dp">
-
-    </ListView>
-
     <Button
         android:id="@+id/voltarBtn"
         android:layout_width="111dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/purple_default"
         android:text="@string/voltar_btn"
         android:textColor="@color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/livros_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>
