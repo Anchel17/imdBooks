@@ -17,12 +17,16 @@ class LivroViewHolder(view: View): ViewHolder(view){
     var descricaoLivro = view.findViewById<TextView>(R.id.desc_livro);
     var isbnLivro = view.findViewById<TextView>(R.id.isbn_livro);
 
-    fun render(livro: Livro){
+    fun render(livro: Livro, onClickListener: (Livro) -> Unit){
         Glide.with(imageLivro.context).load(livro.urlImageLivro).into(imageLivro);
         tituloLivro.text = livro.tituloLivro;
         autorLivro.text = livro.autorLivro;
         editoraLivro.text = livro.editoraLivro;
         descricaoLivro.text = livro.descricaoLivro;
         isbnLivro.text = livro.isbn;
+
+        itemView.setOnClickListener({
+            onClickListener(livro);
+        })
     }
 }

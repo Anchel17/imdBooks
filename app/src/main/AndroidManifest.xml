@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ImdMarket"
         tools:targetApi="31">
         <activity
+            android:name=".DetalharLivroActivity"
+            android:exported="false" />
+        <activity
             android:name=".EsqueciSenhaActivity"
             android:exported="false" />
         <activity

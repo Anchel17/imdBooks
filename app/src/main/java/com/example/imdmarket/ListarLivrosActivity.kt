@@ -3,6 +3,7 @@ package com.example.imdmarket
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,18 @@ class ListarLivrosActivity : AppCompatActivity() {
         })
     }
 
+    fun onLivroSelected(livro: Livro) {
+        val telaDetalharLivroActivity = Intent(this, DetalharLivroActivity::class.java);
+
+        var livroParcelize = LivroParcelize(
+          livro.isbn, livro.tituloLivro, livro.autorLivro,
+          livro.editoraLivro, livro.descricaoLivro, livro.urlImageLivro
+        );
+
+        telaDetalharLivroActivity.putExtra("LIVRO", livroParcelize);
+        startActivity(telaDetalharLivroActivity);
+    }
+
     private fun carregarListaLivros(): MutableList<Livro>{
         return banco.findAll();
     }
@@ -37,7 +50,7 @@ class ListarLivrosActivity : AppCompatActivity() {
     private fun initRecyclerView(){
         recyclerViewLivros = findViewById<RecyclerView>(R.id.livros_recyclerview);
         recyclerViewLivros.layoutManager = LinearLayoutManager(this);
-        recyclerViewLivros.adapter = LivroAdapter(listaLivros)
+        recyclerViewLivros.adapter = LivroAdapter(listaLivros, {onLivroSelected(it)});
     }
 
     private fun irParaTelaDeMenu(){

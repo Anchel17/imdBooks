@@ -49,7 +49,7 @@ class CadastrarActivity : AppCompatActivity() {
         var autorLivroValido = isFieldValido(R.id.create_autor_livro_field);
         var editoraLivroValido = isFieldValido(R.id.create_editora_livro_field);
         var descricaoLivroValida = isFieldValido(R.id.create_desc_livro_field);
-        var urlImageLivroValida = isFieldValido(R.id.create_desc_livro_field);
+        var urlImageLivroValida = isFieldValido(R.id.create_urlimg_livro_field);
 
         return  isbnLivroValido && tituloLivroValido
             &&  autorLivroValido && editoraLivroValido
