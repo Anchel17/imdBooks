@@ -42,6 +42,10 @@ class MainActivity : ComponentActivity() {
         btnCriarConta.setOnClickListener({
             irParaTelaDeCadastrarLogin();
         })
+
+        btnEsqueciSenha.setOnClickListener({
+           irParaTelaDeEsqueciSenha();
+        });
     }
 
     private fun isLoginAndPasswordValid():Boolean{
@@ -84,5 +88,10 @@ class MainActivity : ComponentActivity() {
     private fun irParaTelaDeCadastrarLogin(){
         val telaCadastrarLogin = Intent(this, CadastrarLoginActivity::class.java);
         startActivity(telaCadastrarLogin);
+    }
+
+    private fun irParaTelaDeEsqueciSenha(){
+        val telaEsqueciSenha = Intent(this, EsqueciSenhaActivity::class.java);
+        startActivity(telaEsqueciSenha);
     }
 }
