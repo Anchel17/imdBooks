@@ -7,12 +7,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.imdmarket.banco.BancoLivros
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class CadastrarActivity : AppCompatActivity() {
 
     var listaLivros = mutableListOf<Livro>();
+
+    lateinit var banco: BancoLivros;
 
     lateinit var isbnLivro: EditText;
     lateinit var tituloLivro: EditText;
@@ -27,6 +30,8 @@ class CadastrarActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cadastrar)
 
         var btnSalvar = findViewById<Button>(R.id.btnSaveAlteracao);
+
+        banco = BancoLivros(this);
         listaLivros = carregarListaLivros();
 
         btnSalvar.setOnClickListener({
@@ -42,7 +47,7 @@ class CadastrarActivity : AppCompatActivity() {
 
     private fun isAllCamposValidos(): Boolean{
         var isbnLivroValido = isFieldValido(R.id.create_isbn_livro_field) &&
-                !existeLivroComMesmoCodigo(R.id.create_isbn_livro_field);
+                !existeLivroComMesmoIsbn(R.id.create_isbn_livro_field);
         var tituloLivroValido = isFieldValido(R.id.create_titulo_livro_field);
         var autorLivroValido = isFieldValido(R.id.create_autor_livro_field);
         var editoraLivroValido = isFieldValido(R.id.create_editora_livro_field);
@@ -81,43 +86,25 @@ class CadastrarActivity : AppCompatActivity() {
             autorLivro.text.toString(), editoraLivro.text.toString(),
             descLivro.text.toString(), urlImageLivro.text.toString());
 
+        banco.save(isbnLivro.text.toString(), tituloLivro.text.toString(),
+            autorLivro.text.toString(), editoraLivro.text.toString(),
+            descLivro.text.toString(), urlImageLivro.text.toString());
 
         listaLivros.add(livro);
+
         Toast.makeText(this, "Livro cadastrado com sucesso.", Toast.LENGTH_LONG).show();
-        salvarSharedPreferences();
     }
 
     private fun carregarListaLivros(): MutableList<Livro>{
-        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
-        val gson = Gson();
-        val json = sharedPreferences.getString("livros", null);
-
-        val type = object : TypeToken<MutableList<Livro>>() {}.type;
-
-        if(json.isNullOrEmpty()){
-            return ArrayList<Livro>();
-        }
-
-        return gson.fromJson(json, type);
+        return banco.findAll();
     }
 
-    private fun salvarSharedPreferences(){
-        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
-        val editor = sharedPreferences.edit();
-        val gson = Gson();
-
-        val json = gson.toJson(listaLivros);
-        editor.putString("livros", json);
-        editor.apply();
-    }
-
-    private fun existeLivroComMesmoCodigo(idField: Int): Boolean{
+    private fun existeLivroComMesmoIsbn(idField: Int): Boolean{
         var isbn = findViewById<EditText>(idField);
 
-        var livroJaCadastrado = listaLivros.find {
-            livro: Livro -> livro.isbn == isbn.text.toString() }
+        var livroJaCadastrado = banco.findByIsbn(isbn.text.toString());
 
-        if(livroJaCadastrado != null){
+        if(livroJaCadastrado.isbn.isNotEmpty()){
             Toast.makeText(this, "Já existe livro cadastrado com esse ISBN.", Toast.LENGTH_LONG).show();
             return true;
         }

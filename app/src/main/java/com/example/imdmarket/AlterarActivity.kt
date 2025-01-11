@@ -7,12 +7,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.imdmarket.banco.BancoLivros
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class AlterarActivity : AppCompatActivity() {
 
     var listaLivros = mutableListOf<Livro>();
+
+    lateinit var banco: BancoLivros;
 
     lateinit var isbnLivro: EditText;
     lateinit var tituloLivro: EditText;
@@ -26,6 +29,9 @@ class AlterarActivity : AppCompatActivity() {
         setContentView(R.layout.activity_alterar)
 
         var btnSaveAlterar = findViewById<Button>(R.id.btnSaveAlteracao);
+        var btnLimpar = findViewById<Button>(R.id.btnLimpar);
+
+        banco = BancoLivros(this);
         listaLivros = carregarListaLivros();
 
         btnSaveAlterar.setOnClickListener({
@@ -37,12 +43,16 @@ class AlterarActivity : AppCompatActivity() {
                 showInvalidFieldsToast();
             }
         })
+
+        btnLimpar.setOnClickListener({
+           limparCampos();
+        });
     }
 
     private fun isIsbnLivroValido(): Boolean{
         var isbnLivroValido = isFieldValido(R.id.update_isbn_livro_field);
 
-        return isbnLivroValido && existeLivroComMesmoCodigo(R.id.update_isbn_livro_field);
+        return isbnLivroValido && existeLivroComMesmoIsbn(R.id.update_isbn_livro_field);
     }
 
     private fun salvarLivro(){
@@ -53,24 +63,23 @@ class AlterarActivity : AppCompatActivity() {
         descricaoLivro = findViewById<EditText>(R.id.update_desc_livro_field);
         urlImageLivro = findViewById<EditText>(R.id.update_urlimage_field);
 
-
-        var livro = Livro(isbnLivro.text.toString(), tituloLivro.text.toString(),
+        banco.update(isbnLivro.text.toString(), tituloLivro.text.toString(),
             autorLivro.text.toString(), editoraLivro.text.toString(),
             descricaoLivro.text.toString(), urlImageLivro.text.toString());
 
-        listaLivros.forEach {
-            if(it.isbn == isbnLivro.text.toString()){
-                it.isbn = livro.isbn;
-                it.tituloLivro = livro.tituloLivro;
-                it.autorLivro = livro.autorLivro;
-                it.editoraLivro = livro.editoraLivro;
-                it.descricaoLivro = livro.descricaoLivro;
-                it.urlImageLivro = livro.urlImageLivro;
-            }
-        }
+        listaLivros.clear();
+        listaLivros = banco.findAll();
 
         Toast.makeText(this, "Livro Alterado com sucesso.", Toast.LENGTH_LONG).show();
-        salvarSharedPreferences();
+    }
+
+    private fun limparCampos(){
+        findViewById<EditText>(R.id.update_isbn_livro_field).text.clear();
+        findViewById<EditText>(R.id.update_titulo_livro_field).text.clear();
+        findViewById<EditText>(R.id.update_autor_livro_field).text.clear();
+        findViewById<EditText>(R.id.update_editora_livro_field).text.clear();
+        findViewById<EditText>(R.id.update_desc_livro_field).text.clear();
+        findViewById<EditText>(R.id.update_urlimage_field).text.clear();
     }
 
     private fun showInvalidFieldsToast(){
@@ -89,41 +98,20 @@ class AlterarActivity : AppCompatActivity() {
     }
 
     private fun carregarListaLivros(): MutableList<Livro>{
-        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
-        val gson = Gson();
-        val json = sharedPreferences.getString("livros", null);
-
-        val type = object : TypeToken<MutableList<Livro>>() {}.type;
-
-        if(json.isNullOrEmpty()){
-            return ArrayList<Livro>();
-        }
-
-        return gson.fromJson(json, type);
+        return banco.findAll();
     }
 
-    private fun existeLivroComMesmoCodigo(idField: Int): Boolean{
+    private fun existeLivroComMesmoIsbn(idField: Int): Boolean{
         var isbn = findViewById<EditText>(idField);
 
-        var livroJaCadastrado = listaLivros.find {
-                livro: Livro -> livro.isbn == isbn.text.toString() }
+        var livroJaCadastrado = banco.findByIsbn(isbn.text.toString());
 
-        if(livroJaCadastrado != null){
-            return true;
+        if(livroJaCadastrado.isbn.isEmpty()){
+            Toast.makeText(this, "livro com ISBN não encontrado.", Toast.LENGTH_LONG).show();
+            return false;
         }
 
-        Toast.makeText(this, "Nenhum Livro cadastrado com esse código.", Toast.LENGTH_LONG).show();
-        return false;
-    }
-
-    private fun salvarSharedPreferences(){
-        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
-        val editor = sharedPreferences.edit();
-        val gson = Gson();
-
-        val json = gson.toJson(listaLivros);
-        editor.putString("livros", json);
-        editor.apply();
+        return true;
     }
 
     private fun irParaTelaDeMenu(){

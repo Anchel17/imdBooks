@@ -1,21 +1,17 @@
 package com.example.imdmarket
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imdmarket.adapter.LivroAdapter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.imdmarket.banco.BancoLivros
 
 class ListarLivrosActivity : AppCompatActivity() {
     var listaLivros = mutableListOf<Livro>();
+    lateinit var banco: BancoLivros;
     lateinit var recyclerViewLivros: RecyclerView;
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +20,7 @@ class ListarLivrosActivity : AppCompatActivity() {
 
         val voltarBtn = findViewById<Button>(R.id.voltarBtn);
 
+        banco = BancoLivros(this);
         listaLivros = carregarListaLivros();
 
         initRecyclerView();
@@ -34,17 +31,7 @@ class ListarLivrosActivity : AppCompatActivity() {
     }
 
     private fun carregarListaLivros(): MutableList<Livro>{
-        val sharedPreferences = this.getSharedPreferences("livrosPreference", Context.MODE_PRIVATE);
-        val gson = Gson();
-        val json = sharedPreferences.getString("livros", null);
-
-        val type = object : TypeToken<MutableList<Livro>>() {}.type;
-
-        if(json.isNullOrEmpty()){
-            return ArrayList<Livro>();
-        }
-
-        return gson.fromJson(json, type);
+        return banco.findAll();
     }
 
     private fun initRecyclerView(){
