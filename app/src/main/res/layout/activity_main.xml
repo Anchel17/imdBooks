@@ -66,16 +66,26 @@
 
     <Button
         android:id="@+id/btn_entrar"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
         android:layout_gravity="center"
-        android:text="@string/entrar_btn"
         android:layout_marginTop="15dp"
+        android:backgroundTint="@color/purple_default"
+        android:text="@string/entrar_btn"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_criar_conta"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="Criar conta"
         android:backgroundTint="@color/purple_default"
         android:textColor="@color/white"/>
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/btn_esqueci_senha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/esqueci_senha"
